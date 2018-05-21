@@ -311,13 +311,6 @@ func TestTxs(t *testing.T) {
 	// assert.NotEqual(t, "[]", body)
 }
 
-func TestCandidates(t *testing.T) {
-	candidates := getCandidates(t)
-	assert.Equal(t, len(candidates), 2)
-	assert.Equal(t, hex.EncodeToString(candidates[0].Address), candidateAddr1)
-	assert.Equal(t, hex.EncodeToString(candidates[1].Address), candidateAddr2)
-}
-
 func TestBond(t *testing.T) {
 
 	// create bond TX
@@ -610,16 +603,6 @@ func getDelegatorBond(t *testing.T, delegatorAddr, candidateAddr string) stake.D
 	err := cdc.UnmarshalJSON([]byte(body), &bond)
 	require.Nil(t, err)
 	return bond
-}
-
-func getCandidates(t *testing.T) []stake.Candidate {
-	// get the account to get the sequence
-	res, body := request(t, port, "GET", "/stake/candidates", nil)
-	require.Equal(t, http.StatusOK, res.StatusCode, body)
-	var candidates []stake.Candidate
-	err := cdc.UnmarshalJSON([]byte(body), &candidates)
-	require.Nil(t, err)
-	return candidates
 }
 
 func doBond(t *testing.T, port, seed string) (resultTx ctypes.ResultBroadcastTxCommit) {
